@@ -26,7 +26,6 @@ public:
 int main()
 {
     setlocale(LC_ALL, "rus");
-    Address** address;
     std::string mcity, mstreet;
     int mhouse, mflat;
     int size;
@@ -36,7 +35,7 @@ int main()
         return 0;
     }
     fin >> size;
-    address = new Address*[size];
+    Address** address = new Address*[size];
 
     for (int i = 0; i < size; i++) {
         fin >> mcity >> mstreet >> mhouse >> mflat;
