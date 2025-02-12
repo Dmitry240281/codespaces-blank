@@ -10,6 +10,7 @@ class Address {
     int house_num;
     int flat_num;
 public:
+    Address(){}
     Address(std::string city, std::string street, int house_num, int apartment_num) {
         this->city = city;
         this->street = street;
@@ -35,11 +36,11 @@ int main()
         return 0;
     }
     fin >> size;
-    Address** address = new Address*[size];
+    Address* address = new Address[size];
 
     for (int i = 0; i < size; i++) {
         fin >> mcity >> mstreet >> mhouse >> mflat;
-        address[i] = new Address(mcity, mstreet, mhouse, mflat);
+        address[i] = Address(mcity, mstreet, mhouse, mflat);
     }
     fin.close();
 
@@ -50,13 +51,10 @@ int main()
     }
     fout << size << std::endl;
         for (int i = size - 1; i >= 0; i--) {
-            fout << address[i]->get_output_address() << std::endl;
+            fout << address[i].get_output_address() << std::endl;
         }
     fout.close();
 
-        for (int i = 0; i < size; i++) {
-            delete address[i];
-        }
         delete[] address;
 }
 
