@@ -25,23 +25,26 @@ public:
     std::string get_city() {
         return city;
     }
-    void set_city(Address& city, Address& city_new) {
-        std::string temp_city, temp_street;
-        int temp_house_num, temp_flat_num;
-        temp_city = city_new.city;
-        temp_street = city_new.street;
-        temp_house_num = city_new.house_num;
-        temp_flat_num = city_new.flat_num;
-
-        city_new.city = this->city;
-        city_new.street = this->street;
-        city_new.house_num = this->house_num;
-        city_new.flat_num = this->flat_num;
-
-        this->city = temp_city;
-        this->street = temp_street;
-        this->house_num = temp_house_num;
-        this->flat_num = temp_flat_num;
+    std::string get_street() {
+        return street;
+    }
+    int get_house_num() {
+        return house_num;
+    }
+    int get_flat_num() {
+        return flat_num;
+    }
+    void set_city(std::string city) {
+        this->city = city;
+    }
+    void set_street(std::string street) {
+        this->street = street;
+    }
+    void set_house_num(int house_num) {
+        this->house_num = house_num;
+    }
+    void set_flat_num(int flat_num) {
+        this->flat_num = flat_num;
     }
 };
 
@@ -74,7 +77,22 @@ int main()
             std::string c1 = address[j].get_city();
             std::string c2 = address[j+1].get_city();
             if (c1 > c2) {
-                address[j].set_city(address[j], address[j + 1]);
+                Address temp;
+                temp.set_city(address[j + 1].get_city());
+                temp.set_street(address[j + 1].get_street());
+                temp.set_house_num(address[j + 1].get_house_num());
+                temp.set_flat_num(address[j + 1].get_flat_num());
+
+                address[j + 1].set_city(address[j].get_city());
+                address[j + 1].set_street(address[j].get_street());
+                address[j + 1].set_house_num(address[j].get_house_num());
+                address[j + 1].set_flat_num(address[j].get_flat_num());
+
+                address[j].set_city(temp.get_city());
+                address[j].set_street(temp.get_street());
+                address[j].set_house_num(temp.get_house_num());
+                address[j].set_flat_num(temp.get_flat_num());
+
                 swapped = true;
             }
         }
