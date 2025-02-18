@@ -2,19 +2,17 @@
 
 #include <iostream>
 #include <string>
-
+// Базовый класс Фигура
 class Figure {
 protected:
     std::string name;
     int size;
 public:
-    //Figure() {}
     Figure(int size, std::string name = "Фигура") {
         this->name = name;
         this->size = size;
-        //print_info();
     }
-    virtual bool check() {
+    bool check() {
         if (size == 0) return true;
         else return false;
     }
@@ -27,7 +25,7 @@ public:
         return F_name + p_check + p_size;
     }
 };
-
+// Треугольник
 class Triangle : public Figure {
 protected:
     std::string name;
@@ -35,7 +33,6 @@ protected:
     int a{}, b{}, c{}; // Стороны
     int A{}, B{}, C{}; // Углы
 public:
-    //Triangle() {}
     Triangle(int size, int a, int b, int c, int A, int B, int C, std::string name = "Треугольник") : Figure(size, name) {
         this->name = name;
         this->size = size;
@@ -45,10 +42,8 @@ public:
         this->A = A;
         this->B = B;
         this->C = C;
-        
-        //print_info();
     }
-    bool check() override {
+    virtual bool check() {
         if (size == 3 && A+B+C == 180) return true;
         else return false;
     }
@@ -63,10 +58,10 @@ public:
         return F_name + p_check + p_size + p_side + p_angles;
     }
 };
-
-class right_triangle : public Triangle {
+// Прямоугольный треугольник
+class Triangle_Right : public Triangle {
 public:
-    right_triangle(int size, int a, int b, int c, int A, int B, int C, std::string name = "Прямоугольный треугольник") : Triangle(size, a, b, c, A, B, C, name) {
+    Triangle_Right(int size, int a, int b, int c, int A, int B, int C, std::string name = "Прямоугольный треугольник") : Triangle(size, a, b, c, A, B, C, name) {
     }
     bool check() override {
         if (size == 3 && A + B + C == 180 && C ==90) return true;
@@ -76,10 +71,10 @@ public:
         return Triangle::print_info();
     }
 };
-
-class isosceles_triangle : public Triangle {
+// Равнобедренный треугольник
+class Triangle_Isosceles : public Triangle {
 public:
-    isosceles_triangle(int size, int a, int b, int c, int A, int B, int C, std::string name = "Равнобедренный треугольник") : Triangle(size, a, b, c, A, B, C, name) {
+    Triangle_Isosceles(int size, int a, int b, int c, int A, int B, int C, std::string name = "Равнобедренный треугольник") : Triangle(size, a, b, c, A, B, C, name) {
     }
     bool check() override {
         if (size == 3 && A + B + C == 180 && a==c && A==C) return true;
@@ -89,10 +84,10 @@ public:
         return Triangle::print_info();
     }
 };
-
-class equilateral_triangle : public Triangle {
+// Равносторонний треугольник
+class Triangle_Equilateral : public Triangle {
 public:
-    equilateral_triangle(int size, int a, int b, int c, int A, int B, int C, std::string name = "Равносторонний треугольник") : Triangle(size, a, b, c, A, B, C, name) {
+    Triangle_Equilateral(int size, int a, int b, int c, int A, int B, int C, std::string name = "Равносторонний треугольник") : Triangle(size, a, b, c, A, B, C, name) {
     }
     bool check() override {
         if (size == 3 && A + B + C == 180 && a == b && b == c && A == B && B == C && C == 60) return true;
@@ -102,7 +97,7 @@ public:
         return Triangle::print_info();
     }
 };
-
+// Четырехугольник - базовый для всех четырехугольников
 class Quadrate : public Figure {
 protected:
     std::string name;
@@ -121,10 +116,8 @@ public:
         this->B = B;
         this->C = C;
         this->D = D;
-
-        //print_info();
     }
-    bool check() override {
+    virtual bool check() {
         if (size == 4 && A+B+C+D==360) return true;
         else return false;
     }
@@ -139,10 +132,10 @@ public:
         return F_name + p_check + p_size + p_side + p_angles;
     }
 };
-
-class rectangle : public Quadrate {
+// Прямоугольник
+class Quadrate_Rectangle : public Quadrate {
 public:
-    rectangle(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "Прямоугольник") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
+    Quadrate_Rectangle(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "Прямоугольник") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
     }
     bool check() override {
         if (size == 4 && A + B + C + D == 360 && A == B && B== C && C == D && D == 90 && a == c && b == d) return true;
@@ -152,10 +145,10 @@ public:
         return Quadrate::print_info();
     }
 };
-
-class square : public Quadrate {
+// Квадрат
+class Quadrate_Square : public Quadrate {
 public:
-    square(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "Квадрат") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
+    Quadrate_Square(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "Квадрат") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
     }
     bool check() override {
         if (size == 4 && A + B + C + D == 360 && A == B && B == C && C == D && C == 90 && a == b && b == c && c == d) return true;
@@ -165,10 +158,10 @@ public:
         return Quadrate::print_info();
     }
 };
-
-class parallelogram : public Quadrate {
+// Паралелограмм
+class Quadrate_Parallelogram : public Quadrate {
 public:
-    parallelogram(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "Параллелограмм") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
+    Quadrate_Parallelogram(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "Параллелограмм") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
     }
     bool check() override {
         if (size == 4 && A + B + C + D == 360 && A == C && B == D && a == c && b == d) return true;
@@ -178,10 +171,10 @@ public:
         return Quadrate::print_info();
     }
 };
-
-class rhombus : public Quadrate {
+// Ромб
+class Quadrate_Rhombus : public Quadrate {
 public:
-    rhombus(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "ромб") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
+    Quadrate_Rhombus(int size, int a, int b, int c, int d, int A, int B, int C, int D, std::string name = "ромб") : Quadrate(size, a, b, c, d, A, B, C, D, name) {
     }
     bool check() override {
         if (size == 4 && A + B + C + D == 360 && A == C && B == D && a == b && b == c && c == d) return true;
@@ -191,8 +184,7 @@ public:
         return Quadrate::print_info();
     }
 };
-
-
+// Функция вывода на экран
 void print(Figure& figure) {
     std::cout << figure.print_info() << std::endl;
 }
@@ -203,26 +195,25 @@ int main()
 
     Figure F(0);
     print(F);
-    Triangle T(3, 10,20,30,50,60,40); // Треугольник
+    Triangle T(3, 10, 20, 30, 50, 60, 40); // Треугольник
     print(T);
-    right_triangle Rt(3, 10, 20, 30, 40, 50, 90); // Прямоугольный треугольник
+    Triangle_Right Rt(3, 10, 20, 30, 40, 50, 90); // Прямоугольный треугольник
     print(Rt);
-    isosceles_triangle It(3, 20, 10, 20, 30, 120, 30); // Равнобедренный треугольник
+    Triangle_Isosceles It(3, 20, 10, 20, 30, 120, 30); // Равнобедренный треугольник
     print(It);
-    equilateral_triangle Et(3, 20, 20, 20, 60, 60, 60); // Равносторонний треугольник
+    Triangle_Equilateral Et(3, 20, 20, 20, 60, 60, 60); // Равносторонний треугольник
     print(Et);
     Quadrate Q(4, 10, 20, 30, 40, 50, 60, 70, 80); // Четырехугольник
     print(Q);
-    rectangle R(4, 20, 30, 20, 30, 90, 90, 90, 90); // Прямоугольник
+    Quadrate_Rectangle R(4, 20, 30, 20, 30, 90, 90, 90, 90); // Прямоугольник
     print(R);
-    square Sq(4, 40, 40, 40, 40, 90, 90, 90, 90); // Квадрат
+    Quadrate_Square Sq(4, 40, 40, 40, 40, 90, 90, 90, 90); // Квадрат
     print(Sq);
-    parallelogram P(4, 30, 40, 30, 40, 50, 60, 50, 60); // Паралелограмм
+    Quadrate_Parallelogram P(4, 30, 40, 30, 40, 50, 60, 50, 60); // Паралелограмм
     print(P);
-    rhombus Rh(4, 50,50,50,50,45,135,45,135); // Ромб
+    Quadrate_Rhombus Rh(4, 50, 50, 50, 50, 45, 135, 45, 135); // Ромб
     print(Rh);
-
-
+    
     return EXIT_SUCCESS;
 }
 

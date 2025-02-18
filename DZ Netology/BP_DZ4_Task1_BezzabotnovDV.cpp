@@ -4,46 +4,46 @@
 
 class FigureParent {
     int side;
-    std::string figure;
+    std::string name;
 public:
-    void get_sides_count(std::string figure, int side) {
+    void set_sides_count(std::string figure, int side) {
         this->side = side;
-        this->figure = figure;
+        this->name = name;
     }
-    void print(std::string figure, int side) {
-        std::cout << figure << ": " << side << std::endl;
+    void get_side_count (std::string name, int side) const {
+        std::cout << name << ": " << side << std::endl;
     }
 };
 
 class Figure: public FigureParent {
     int side = 0;
-    std::string figure = "Фигура";
+    std::string name = "Фигура";
 public:
-    Figure() { get_sides_count(figure, side); }
-    void F_print() {
-        print(figure, side);
+    Figure() { set_sides_count(name, side); }
+    void get_print() const {
+        get_side_count(name, side);
         }
     
 };
 
 class Triangle: public FigureParent {
     int side = 3;
-    std::string figure = "Треугольник";
+    std::string name = "Треугольник";
 public:
-    Triangle() { get_sides_count(figure, side); }
-    void F_print() {
-        print(figure, side);
+    Triangle() { set_sides_count(name, side); }
+    void get_print() const {
+        get_side_count(name, side);
     }
 
 };
 
 class Quadrilateral: public FigureParent {
     int side = 4;
-    std::string figure = "Четырехугольник";
+    std::string name = "Четырехугольник";
 public:
-    Quadrilateral() { get_sides_count(figure, side); }
-    void F_print() {
-        print(figure, side);
+    Quadrilateral() { set_sides_count(name, side); }
+    void get_print() {
+        get_side_count(name, side);
     }
 
 };
@@ -52,11 +52,11 @@ int main()
 {
     setlocale(LC_ALL, "rus");
     Figure F;
-    F.F_print();
+    F.get_print();
     Triangle T;
-    T.F_print();
+    T.get_print();
     Quadrilateral Q;
-    Q.F_print();
+    Q.get_print();
 
     return EXIT_SUCCESS;
 }
