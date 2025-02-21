@@ -24,7 +24,7 @@ int main()
     std::cout << "Введите число 2: ";
     std::cin >> j;
     std::cout << "Результат сложения: " << add(i, j) << std::endl;
-
+#else
     std::cout << "Неизвестный режим. Завершение работы." << std::endl;
 #endif
 #endif
