@@ -34,8 +34,8 @@ int main()
 	Fraction f1(4, 3);
 	Fraction f2(6, 11);
 
-	std::cout << f1.DecFrac() << std::endl;
-	std::cout << f2.DecFrac() << std::endl;
+	//std::cout << f1.DecFrac() << std::endl;
+	//std::cout << f2.DecFrac() << std::endl;
 
 	std::cout << "f1" << ((f1 == f2) ? " == " : " not == ") << "f2" << '\n'; // f1 not == f2
 	std::cout << "f1" << ((f1 != f2) ? " != " : " not != ") << "f2" << '\n'; // f1 != f2
