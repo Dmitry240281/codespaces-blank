@@ -35,14 +35,17 @@ public:
 
     std::string print_pyramid(int i)
     {
-        
-        if (i == 0) {
-            return std::to_string(i) + " root " + std::to_string(root());
-            //k++;
+        int level = 0;
+        int index = i;
+        while (index != 0) {
+            level++;
+            index = (index - 1) / 2;
         }
-        else if (i % 2 == 0) return std::to_string(i) + " right( " + std::to_string(arr[parant_index(i)]) + ") " + std::to_string(arr[right_index(parant_index(i))]);
-        else return std::to_string(i) + " left(" + std::to_string(arr[parant_index(i)]) + ") " + std::to_string(arr[left_index(parant_index(i))]);
-        //if (i > k * k) k++;
+        if (i == 0) {
+            return "0 root " + std::to_string(root());
+        }
+        else if (i % 2 == 0) return std::to_string(level) + " right( " + std::to_string(arr[parant_index(i)]) + ") " + std::to_string(arr[right_index(parant_index(i))]);
+        else return std::to_string(level) + " left(" + std::to_string(arr[parant_index(i)]) + ") " + std::to_string(arr[left_index(parant_index(i))]);
     }
 };
 

@@ -33,34 +33,24 @@ public:
 
     void print_pyramid()
     {
+        int level = 0;
         int i = index;
-            if (i == 0) {
-                std::cout << index << " root " << root() << std::endl;
+        while (i != 0) {
+            level++;
+            i = (i - 1) / 2;
+        }
+            if (index == 0) {
+                std::cout << 0 << " root " << root() << std::endl;
                 //k++;
             }
-            else if (i % 2 == 0) std::cout << index << " right(" << arr[parant_index(i)] << ") " << arr[right_index(parant_index(i))] << std::endl;
-            else std::cout << index << " left(" << arr[parant_index(i)] << ") " << arr[left_index(parant_index(i))] << std::endl;
+            else if (index % 2 == 0) std::cout << level << " right(" << arr[parant_index(index)] << ") " << arr[right_index(parant_index(index))] << std::endl;
+            else std::cout << level << " left(" << arr[parant_index(index)] << ") " << arr[left_index(parant_index(index))] << std::endl;
             //if (i > k * k) k++;
         
     }
 };
 
 
-/* Вспомогательная функция для вывода на экран массива размера n */
-void print_pyramid(int arr[], int s)
-{
-    for (int i = 0; i < s; i++) {
-        int left = (i + 1) / 2 - 1; // левый
-        int right = (i + 2) / 2 - 2; // правый
-        if (i == 0) {
-            std::cout << 0 << " root " << arr[i] << std::endl;
-            //k++;
-        }
-        else if (i % 2 == 0) std::cout << " right(" << arr[right] << ") " << arr[i] << std::endl;
-        else std::cout <<  " left(" << arr[left] << ") " << arr[i] << std::endl;
-        //if (i > k * k) k++;
-    }
-}
 
 
 int main()
