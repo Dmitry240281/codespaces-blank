@@ -4,79 +4,65 @@
 #include <fstream>
 #include <string>
 #include <list>
+#include <stack>
 using namespace std;
 
 class Graph {
-    int vertices;
-    int** adjLists;
-    bool* visited;
-    //int* queue;
-    int* adjList;
-    int* order;
-    int ord = 0;
+    int V;	// Количество вершин
+    list<int>* adj; //  Указатель на массив, содержащий список смежности
 public:
-    // Инициализация графа
-    Graph(int** arr, int vertices) {
-        this->vertices = vertices;
-        adjLists = arr;
-        visited = new bool[vertices];
-        for (int b = 0; b < vertices; b++)
-            visited[b] = false;
-        adjList = new int[vertices];
-        order = new int[vertices];
-        for (int o = 0; o < vertices; o++)
-            order[o] = -1;
-        //queue = new int[vertices];
-        for (int q = 0; q < vertices; q++) {
-            
-            if (visited[q] == false) {
-                DFS(q);
+    Graph(int V);
+    void addEdge(int** arr_two);
+    void DFSUtil(int v, bool visited[], stack<int>& Stack);
+    void DFS();
+};
+
+Graph::Graph(int V) {
+    this->V = V;
+    adj = new list<int>[V];
+}
+// Функция для добавления ребра в граф
+void Graph::addEdge(int** arr_two) {
+    int v = 0;
+    int w = 0;
+    for (int i = 0; i < V; i++) {
+        v = i;
+        for (int j = 0; j < V; j++) {
+            if (arr_two[i][j] == 1) {
+                w = j;
+                adj[v].push_back(w);
             }
         }
     }
-    // Функция бхода в глубину
-    void DFS(int vertex) {
-        
-        visited[vertex] = true;
-        //cout << vertex + 1 << endl;
-        adjList = adjLists[vertex];
-        int n = 0;
-                for (int m = 0; m < vertices; m++)
-                    n = n + adjList[m];
-                if (n > 0) {
-                    for (int i = 0; i < vertices; i++) {
-                        bool k = false;
-                        for (int j = 0; j < vertices; j++) { // Проверка есть ли в массиве order[j] эта вершина
-                            if (order[j] == i) k = true;
-                        }
-
-                        if (k == false && adjList[i] == 1 && visited[i] == false) {
-
-                            DFS(i);
-                        }
-                        else {
-
-                        }
-
-                    }
-                    for (int f = vertices; f >= 0; f--)
-                        order[f] = order[f - 1];
-                    order[0] = vertex;
-                }
-                else {
-                    for (int f = vertices; f >= 0; f--)
-                        order[f] = order[f - 1];
-                    order[0] = vertex;
-                }
+}
+// Рекурсивная функция, используемая topologicalSort
+void Graph::DFSUtil(int v, bool visited[], stack<int>& Stack) {
+    visited[v] = true; // Помечаем текущий узел как посещенный
+    list<int>::iterator i; // Рекурсивно вызываем функцию для всех смежных вершин
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
+        if (!visited[*i])
+            DFSUtil(*i, visited, Stack);
+    Stack.push(v); // Добавляем текущую вершину в стек с результатом
+}
+// Функция для поиска топологической сортировки. 
+// Рекурсивно использует topologicalSortUtil()
+void Graph::DFS() {
+    stack<int> Stack;
+    bool* visited = new bool[V]; // Помечаем все вершины как непосещенные
+    for (int i = 0; i < V; i++)
+        visited[i] = false;
+    // Вызываем рекурсивную вспомогательную функцию 
+    // для поиска топологической сортировки для каждой вершины
+    for (int i = 0; i < V; i++)
+        if (visited[i] == false)
+            DFSUtil(i, visited, Stack);
+    // Выводим содержимое стека
+    while (Stack.empty() == false)     {
+        cout << Stack.top()+1 << " ";
+        Stack.pop();
     }
+}
 
-    void print_order() {
-        for (int o = 0; o < vertices; o++)
-            cout << order[o]+1 << ' ';
-        cout << endl;
-    }
-
-};
 // Создание пустого двумерного массива
 int** create_array(int v) {
     int** arr = new int* [v];
@@ -119,10 +105,11 @@ int main()
         }
         cout << endl;
     }
-    
-    Graph G(arr_two, vertex);
+
+    Graph G(vertex);
+    G.addEdge(arr_two);
     cout << "Топологический порядок вершин: ";
-    G.print_order();
+    G.DFS();
 
     delete_array(arr_two, vertex);
     fin.close();
