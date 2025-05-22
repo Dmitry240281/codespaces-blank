@@ -13,7 +13,15 @@ T square(T a) {
 
 template <typename T>
 T* square(T* a) {
-    return a * a;
+    return *a * *a;
+}
+
+template <typename T>
+std::vector<T>& square(std::vector<T> &v) {
+    for (int i = 0; i < v.size(); i++) {
+        v[i] = v[i] * v[i];
+    }
+    return v;
 }
 
 
@@ -28,16 +36,18 @@ int main()
 
     std::cout << "Vector: " << std::endl;
     std::cout << "[IN]: ";
-    std::vector<int> vec{ -1, 4, 8 };    
+    std::vector<char> vec{ 'v', 'm', 'r'};
     for (auto i = vec.begin(); i != vec.end(); i++) {
         std::cout << *i << (i == vec.end() - 1 ? "" : ", ");
     }
     std::cout << std::endl;
     std::cout << "Square of vector: " << std::endl;
+    square(vec);
     std::cout << "[OUT]: ";
     for (auto i = vec.begin(); i != vec.end(); i++) {
-        std::cout << square(*i) << (i == vec.end() - 1 ? "" : ", ");
+        std::cout << *i << (i == vec.end() - 1 ? "" : ", ");
     }
+
     return 0;
 }
 
