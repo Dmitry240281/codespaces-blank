@@ -11,6 +11,8 @@ class Table {
     T** array = nullptr;
 public:
     Table(int r, int c) {
+        this->r = r;
+        this->c = c;
         array = new T * [r];
         for (int i = 0; i < r; i++) {
             array[i] = new T[c];
@@ -19,8 +21,9 @@ public:
 
     Table(const Table& other) : r(other.r), c(other.c) {
         array = new T*[r]; // Выделение новой памяти
-        for (int i = 0; i < r; ++i) {
-            for (int j = 0; j < c; ++j) {
+        for (int i = 0; i < r; i++) {
+            array[i] = new T[c];
+            for (int j = 0; j < c; j++) {
                 array[i][j] = other.array[i][j];
             }
         }
@@ -32,8 +35,11 @@ public:
                 delete[] array[i];
             }
             delete[] array;
+            r = other.r;
+            c = other.c;
             array = new T * [r]; // Выделение новой памяти
             for (int i = 0; i < r; ++i) {
+                array[i] = new T[c];
                 for (int j = 0; j < c; ++j) {
                     array[i][j] = other.array[i][j];
                 }
@@ -50,7 +56,15 @@ public:
         return array[i];
     }
 
-    const int Size(int r, int c) {
+    const int Row() {
+        return r;
+    }
+
+    const int Col() {
+        return c;
+    }
+
+    const int Size() {
         int size = r * c;
         return size;
     }
@@ -65,10 +79,7 @@ public:
 
 int main()
 {
-    int row = 2;
-    int col = 3;
-
-    auto test = Table<int>(row, col);
+    auto test = Table<int>(2, 3);
 
     test[0][0] = 4;
     test[0][1] = 1;
@@ -79,20 +90,17 @@ int main()
     std::cout << "Element: " << test[0][0];
     std::cout << std::endl;
 
-    std::cout << "Table size: " << test.Size(row, col) << std::endl;
+    std::cout << "Table size: " << test.Size() << std::endl;
 
     std::cout << "Table: " << std::endl;
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            std::cout << test[i][j] << (j==col-1 ? "" : ", ");
+    for (int i = 0; i < test.Row(); i++) {
+        for (int j = 0; j < test.Col(); j++) {
+            std::cout << test[i][j] << (j==test.Col() - 1 ? "" : ", ");
         }
         std::cout << std::endl;
     }
 
-    int row1 = 3;
-    int col1 = 4;
-
-    auto test1 = Table<int>(row1, col1);
+    auto test1 = Table<int>(3, 4);
 
     test1[0][0] = 4;
     test1[0][1] = 1;
@@ -108,11 +116,20 @@ int main()
     test1[2][3] = 44;
 
     test = test1;
+    Table<int> test2(test1);
 
-    std::cout << "Table new: " << std::endl;
-    for (int i = 0; i < row1; i++) {
-        for (int j = 0; j < col1; j++) {
-            std::cout << test1[i][j] << (j == col1 - 1 ? "" : ", ");
+    std::cout << "Table copy: " << std::endl;
+    for (int i = 0; i < test.Row(); i++) {
+        for (int j = 0; j < test.Col(); j++) {
+            std::cout << test[i][j] << (j == test.Col() - 1 ? "" : ", ");
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "Table copy 2: " << std::endl;
+    for (int i = 0; i < test2.Row(); i++) {
+        for (int j = 0; j < test2.Col(); j++) {
+            std::cout << test2[i][j] << (j == test2.Col() - 1 ? "" : ", ");
         }
         std::cout << std::endl;
     }
