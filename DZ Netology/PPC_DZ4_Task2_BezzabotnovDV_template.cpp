@@ -16,6 +16,36 @@ public:
             array[i] = new T[c];
         }
     }
+
+    Table(const Table& other) : r(other.r), c(other.c) {
+        array = new T*[r]; // Выделение новой памяти
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < c; ++j) {
+                array[i][j] = other.array[i][j];
+            }
+        }
+    }
+
+    Table& operator=(const Table& other) {
+        if (this != &other) {
+            for (int i = 0; i < r; i++) {
+                delete[] array[i];
+            }
+            delete[] array;
+            array = new T * [r]; // Выделение новой памяти
+            for (int i = 0; i < r; ++i) {
+                for (int j = 0; j < c; ++j) {
+                    array[i][j] = other.array[i][j];
+                }
+            }
+        }
+        return *this;
+    }
+
+    void operator[](T* value) {
+        array = value;
+    }
+
     T* operator[](int i) {
         return array[i];
     }
@@ -55,6 +85,34 @@ int main()
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             std::cout << test[i][j] << (j==col-1 ? "" : ", ");
+        }
+        std::cout << std::endl;
+    }
+
+    int row1 = 3;
+    int col1 = 4;
+
+    auto test1 = Table<int>(row1, col1);
+
+    test1[0][0] = 4;
+    test1[0][1] = 1;
+    test1[0][2] = 10;
+    test1[0][3] = 22;
+    test1[1][0] = 2;
+    test1[1][1] = 5;
+    test1[1][2] = 11;
+    test1[1][3] = 31;
+    test1[2][0] = 3;
+    test1[2][1] = 6;
+    test1[2][2] = 12;
+    test1[2][3] = 44;
+
+    test = test1;
+
+    std::cout << "Table new: " << std::endl;
+    for (int i = 0; i < row1; i++) {
+        for (int j = 0; j < col1; j++) {
+            std::cout << test1[i][j] << (j == col1 - 1 ? "" : ", ");
         }
         std::cout << std::endl;
     }
