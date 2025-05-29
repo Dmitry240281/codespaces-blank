@@ -1,6 +1,9 @@
 ﻿// Задача 3*. Аналог std::vector
 
 #include <iostream>
+//#include <Catch2/catch_test_macros.hpp>
+//#include <Catch2/catch_session.hpp>
+#include <cstdint>
 
 template<typename T>
 class MVector {
@@ -8,7 +11,7 @@ class MVector {
     int index = 0;
     T* array;
 public:
-    MVector() : size(10) {
+    MVector() : size(1) {
         array = new T[size];
     }
 
@@ -49,7 +52,7 @@ public:
                 temp_array[i] = array[i];
             }
             delete[] array;
-            size = size * 2;
+            size = size +1;
             //std::cout << "New Size: " << size << std::endl;
             array = new T[size];
             for (int i = 0; i < size; ++i) {
@@ -113,10 +116,21 @@ int main()
     for (int c = 0; c < Cvec.End(); c++) {
         std::cout << Cvec.at(c) << (c == Cvec.End() - 1 ? "" : ", ");
     }
+    std::cout << std::endl;
+    auto t1 = MVector<int>();
+    t1.push_back(1);
+    t1.push_back(2);
+    t1.push_back(3);
+    std::cout << "Size t1g: " << t1.Size() << std::endl;
+    std::cout << "My Vector t1: ";
+    for (int t = 0; t < t1.End(); t++) {
+        std::cout << t1.at(t) << (t == t1.End() - 1 ? "" : ", ");
+    }
     }
     catch (const std::exception& ex) {
         std::cout << ex.what() << std::endl;
     }
+
 
     return EXIT_SUCCESS;
 }
