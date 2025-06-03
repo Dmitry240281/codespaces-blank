@@ -23,14 +23,22 @@ public:
         std::cout << "Delete My Unique Ptr!" << std::endl;
     }
     T& operator*() {
-        return *pointer;
+        if (pointer == nullptr) {
+            std::cout << "Pointer is null." << std::endl;
+        }
+        else {
+            return *pointer;
+            std::cout << "Pointer is not null." << std::endl;
+        }
+        
     }
     T* operator->() {
         return pointer;
     }
-    void release() {
-        delete pointer;
+    T* release() {
+        pointer = nullptr;
         pointer = new T;
+        return pointer;
     }
 };
 
@@ -39,7 +47,8 @@ int main()
     MyUniquePtr<int> ptr1(new int);
     *ptr1 = 25;
     std::cout << "New ptr: " << * ptr1 << std::endl;
-    ptr1.release();
+    int *p = ptr1.release();
+    *p = 35;
     std::cout << "After release ptr: " << *ptr1 << std::endl;
 
     MyUniquePtr<Test> ptr2(new Test(400));
