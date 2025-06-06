@@ -2,62 +2,100 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <algorithm>
 using std::cout;
 using std::endl;
 
 class big_integer {
-    char* number;
-    long long int x;
-
+    std::vector<int> number;
 public:
-    big_integer(const char* num = "") : number(nullptr), x(0) {
-        if (num) {
-            std::size_t n = std::strlen(num) + 1;
-            number = new char[n];
-            std::memcpy(number, num, n);
-            x = atoll(number);
-        }
+    big_integer(std::string num = "") {
+        std::transform(num.begin(), num.end(), back_inserter(number), [](char c) { return c - '0'; });
     }
-    ~big_integer() {
-        delete[] number;
+    ~big_integer() {}
+    big_integer(const big_integer& other) { 
+        this->number = other.number;
     }
-    big_integer(const big_integer& other) : big_integer(other.number) { x = other.x; }
-    big_integer(big_integer&& other) noexcept : number(std::exchange(other.number, nullptr)), x(std::exchange(other.x, 0)) {}
+    big_integer(big_integer&& other) noexcept {
+        this->number = std::move(other.number);
+        
+    }
     big_integer& operator=(const big_integer& other) {
-        x = other.x;
-        return *this = big_integer(other);
+        this->number = other.number;
+        return *this;
     }
     big_integer& operator=(big_integer&& other) noexcept {
         std::swap(number, other.number);
-        std::swap(x, other.x);
         return *this;
     }
-    long long int operator+(big_integer& other) {
-        long long int y = x + other.x;
-        return y;
+    std::string operator+(big_integer& other) { // Сложение в столбик
+        std::string summav;
+        std::vector<int> vec1 = this->number;
+        std::vector<int> vec2 = other.number;
+        int transfer = 0;
+        auto it1 = vec1.begin();
+        auto it2 = vec2.begin();
+        int index1 = vec1.size() - 1;
+        int index2 = vec2.size() - 1;
+        while (index1 >= 0 || index2 >=0) {
+            int a = vec1.at(index1);
+            int b = vec2.at(index2);
+            int itsn = 0;
+            int sum = a + b + transfer;
+            if (sum > 9) {
+                itsn = sum - 10;
+                transfer = 1;
+            }
+            else {
+                itsn = sum;
+                transfer = 0;
+            }
+            if (transfer > 0 && index1 == 0 || vec1.size() < vec2.size()) {
+                vec1.insert(vec1.begin(), 0);
+                index1++;
+            }
+            if (transfer > 0 && index2 == 0 || vec1.size() > vec2.size()) {
+                vec2.insert(vec2.begin(), 0);
+                index2++;
+            }
+            std::string nstr = std::to_string(itsn);
+            summav = nstr + summav;
+            index1--;
+            index2--;
+        }
+        return summav;
     }
-
-    long long int print() {
-        return x;
+    void print() {
+        for (auto i : number) {
+            cout << i;
+        }
+        cout << endl;
     }
 };
 
 int main()
 {
-    auto number1 = big_integer("922337203567485");
-    auto number2 = big_integer("785241278868568");
+    auto number1 = big_integer("114575");
+    auto number2 = big_integer("78524");
     
-    cout << "Number 1: " << number1.print() << endl;
+    cout << "Number 1: ";
+    number1.print();
     
-    cout << "Number 2: " << number2.print() << endl;
+    cout << "Number 2: ";
+    number2.print();
+
     auto result = number1 + number2;
     cout << "Number 1 + Number 2 = " << result << endl;
     auto number3 = big_integer();
     number3 = number2;
-    cout << "Number 3: " << number3.print() << endl;
+    cout << "Number 3: ";
+    number3.print();
     big_integer number4(std::move(number1));
-    cout << "Number 4: " << number4.print() << endl;
-    cout << "Number 1: " << number1.print() << endl;
+    cout << "Number 4: ";
+    number4.print();
+    cout << "Number 1: ";
+    number1.print();
 
     return 0;
 }
