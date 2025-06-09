@@ -66,23 +66,26 @@ public:
         }
         return summav;
     }
-    std::string operator*(int num) { // Умножение на число
+    big_integer operator*(int num) { // Умножение на число
         std::string Mult;
         std::vector<int> vec = this->number;
         int index = vec.size() - 1;
         //int transfer = 0;
-        int summ = 0;
+        big_integer Summ("0");
+        //int summ = 0;
         int indsu = 1;
         while (index >= 0) {
             int a = vec.at(index);
-            int mult = num * a;
-            summ = summ + (mult * indsu);
+            int mult = num * a * indsu;
+            big_integer Mult(std::to_string(mult));
+            Summ = Summ + Mult;
+            //summ = summ + (mult * indsu);
             indsu = indsu *10;
             index--;
             
         }
-        Mult = std::to_string(summ);
-        return Mult;
+        //Mult = std::to_string(summ);
+        return Summ;
 
     }
     void print() {
@@ -108,7 +111,8 @@ int main()
     cout << "Number 1 + Number 2 = " << result << endl;
     int num = 32;
     auto mult = number1 * num;
-    cout << "Number 1 * " << num << " = " << mult << endl;
+    cout << "Number 1 * " << num << " = ";
+    mult.print();
 
     auto number3 = big_integer();
     number3 = number2;
