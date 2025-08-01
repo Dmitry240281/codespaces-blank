@@ -8,11 +8,11 @@
 
 using namespace std;
 
-void SumTwoVectors(double& sumvec, vector<int> vec1, vector<int> vec2) {
+void SumTwoVectors(vector<int> sumvec, vector<int> vec1, vector<int> vec2) {
     
     for (int i = 0; i < vec1.size(); ++i)
     {
-        sumvec += vec1.at(i) + vec2.at(i);
+        sumvec.push_back(vec1.at(i) + vec2.at(i));
     }
 
 }
@@ -39,7 +39,7 @@ int main()
             vector1.resize(count_vec, 1);
             vector2.resize(count_vec, 1);
             vector<std::thread> threads;
-            double sum_vectors = 0;
+            vector<int> sum_vectors;
 
             int part_size = count_vec / count_thr;
 
@@ -66,7 +66,7 @@ int main()
                     new_vector2.push_back(vector2.at(j));
                 }
 
-                threads.push_back(thread(SumTwoVectors, std::ref(sum_vectors), new_vector1, new_vector2));
+                threads.push_back(thread(SumTwoVectors, sum_vectors, new_vector1, new_vector2));
             }
             for (auto& it : threads)
             {
