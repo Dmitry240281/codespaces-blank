@@ -8,11 +8,11 @@
 
 using namespace std;
 
-void SumTwoVectors(vector<int> sumvec, vector<int> vec1, vector<int> vec2) {
-    
-    for (int i = 0; i < vec1.size(); ++i)
+void SumTwoVectors(vector<int>& sumvec, vector<int>& vec1, vector<int>& vec2, size_t start_index, size_t end_index) {
+    //auto i = vec1.begin();
+    for (int i = start_index; i < end_index; ++i)
     {
-        sumvec.push_back(vec1.at(i) + vec2.at(i));
+        sumvec.push_back(vec1[i] + vec2[i]);
     }
 
 }
@@ -39,15 +39,15 @@ int main()
             vector1.resize(count_vec, 1);
             vector2.resize(count_vec, 1);
             vector<std::thread> threads;
-            vector<int> sum_vectors;
+            vector<int> sum_vectors(count_vec, 0);
 
             int part_size = count_vec / count_thr;
 
             auto start = chrono::high_resolution_clock::now();
             for (int i = 0; i < count_thr; i++)
             {
-                vector<int> new_vector1;
-                vector<int> new_vector2;
+                //vector<int> new_vector1;
+                //vector<int> new_vector2;
                 int right_border = 0;
                 
                 if (i != count_thr - 1)
@@ -59,14 +59,14 @@ int main()
                     right_border = count_vec;
                 }
                 
-                right_border = count_vec;
-                for (int j = part_size * i; j < right_border; ++j)
-                {
-                    new_vector1.push_back(vector1.at(j));
-                    new_vector2.push_back(vector2.at(j));
-                }
+                //right_border = count_vec;
+                //for (int j = part_size * i; j < right_border; ++j)
+                //{
+                //    new_vector1.push_back(vector1.at(j));
+                //    new_vector2.push_back(vector2.at(j));
+                //}
 
-                threads.push_back(thread(SumTwoVectors, sum_vectors, new_vector1, new_vector2));
+                threads.push_back(thread(SumTwoVectors, ref(sum_vectors), ref(vector1), ref(vector2), (part_size * i), right_border));
             }
             for (auto& it : threads)
             {
