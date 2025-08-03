@@ -8,8 +8,8 @@
 
 using namespace std;
 
-void SumTwoVectors(vector<int>& sumvec, vector<int>& vec1, vector<int>& vec2, size_t start_index, size_t end_index) {
-    //auto i = vec1.begin();
+void SumTwoVectors(vector<int> sumvec, vector<int>& vec1, vector<int>& vec2, size_t start_index, size_t end_index) {
+    
     for (int i = start_index; i < end_index; ++i)
     {
         sumvec.push_back(vec1[i] + vec2[i]);
