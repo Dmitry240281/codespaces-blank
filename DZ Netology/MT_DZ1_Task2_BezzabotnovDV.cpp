@@ -8,11 +8,11 @@
 
 using namespace std;
 
-void SumTwoVectors(vector<int> sumvec, vector<int>& vec1, vector<int>& vec2, size_t start_index, size_t end_index) {
+void SumTwoVectors(vector<int>& sumvec, vector<int>& vec1, vector<int>& vec2, size_t start_index, size_t end_index) {
     
     for (int i = start_index; i < end_index; ++i)
     {
-        sumvec.push_back(vec1[i] + vec2[i]);
+        sumvec[i] = (vec1[i] + vec2[i]);
     }
 
 }
@@ -46,8 +46,7 @@ int main()
             auto start = chrono::high_resolution_clock::now();
             for (int i = 0; i < count_thr; i++)
             {
-                //vector<int> new_vector1;
-                //vector<int> new_vector2;
+                
                 int right_border = 0;
                 
                 if (i != count_thr - 1)
@@ -59,15 +58,9 @@ int main()
                     right_border = count_vec;
                 }
                 
-                //right_border = count_vec;
-                //for (int j = part_size * i; j < right_border; ++j)
-                //{
-                //    new_vector1.push_back(vector1.at(j));
-                //    new_vector2.push_back(vector2.at(j));
-                //}
-
                 threads.push_back(thread(SumTwoVectors, ref(sum_vectors), ref(vector1), ref(vector2), (part_size * i), right_border));
             }
+            
             for (auto& it : threads)
             {
                 it.join();
